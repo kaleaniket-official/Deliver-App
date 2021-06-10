@@ -1,16 +1,11 @@
- const mongoose = require("mongoose");
+ const pool = require("pg").Pool;
 
- const connectDB = async () => {
+ const dbConnect = new pool({
+     user: "postgres",
+     password: "@fourtech",
+     database: "mustangDB",
+     host: "localhost",
+     port: 5433
+ })
 
-    const conn = mongoose.connect(process.env.DB_URL, {
-
-        useNewUrlParser : true,
-        useCreateIndex : true,
-        useFindAndModify : false,
-        useUnifiedTopology : true
-    },() =>{
-        console.log(`MondoDB connected!!!`)
-    })
- }
-
- module.exports = connectDB;
+ module.exports = dbConnect;

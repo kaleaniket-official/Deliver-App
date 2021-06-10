@@ -8,9 +8,10 @@ dotenv.config({
     path: "./config.env"
 })
 
-connectDB();
+//connectDB();
 
 app.use(morgan("dev"));
+app.use(express.json());
 
 app.get("/mustang",(req,res) => {
     res.status(200).json({
@@ -24,6 +25,15 @@ app.post("/login",(req,res) => {
     })
 })
 
+app.get("/mustang/getTenants", async (req,res) => {
+    
+    try{
+        const data = await connectDB.query("SELECT * from public.tenant");
+        res.json(data);
+    }catch(err){
+        console.error(err.message);
+    }
+})
 
 const PORT = process.env.PORT || 3000;
 
