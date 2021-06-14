@@ -14,11 +14,12 @@ var login = (req, res) => {
 
 var auth = (req,res,next) =>{
   
-    const token = req.header('auth-token');
+    const token = req.header('Authorization');
     if(!token) return res.status(401).send('Access denied!');
 
     try{
-        const verified = jwt.verify(token , process.env.TOKEN_SECRET_KEY);
+         const tokens = token.split(' ');
+        const verified = jwt.verify(tokens[1] , process.env.TOKEN_SECRET_KEY);
         req.useContext - verified;
     }catch(err){
          res.status(400).send('Invalid token!')

@@ -7,11 +7,16 @@ dotenv.config({
     path: "./config.env"
 })
 
-//connectDB();
-
 app.use(morgan("dev"));
 app.use(express.json());
 
+//Swagger documentation
+const swaggerUi = require('swagger-ui-express');
+const swaggerDocument = require('./OpenApiDocumentation/swagger.json');
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
+
+//API Dashboard
 app.use("/mustang", apiDashboardRouter);
 
 const PORT = process.env.PORT || 3000;
