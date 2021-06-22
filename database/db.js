@@ -2,10 +2,10 @@
 
  const dbConnect = new pool({
      user: "postgres",
-     password: "@fourtech",
+     password: "afourtech",
      database: "mustangDB",
-     host: "localhost",
-     port: 5433
+     host: "mustang-db.cbzurvwqgpyf.ap-south-1.rds.amazonaws.com",
+     port: 5432
  })
 
  module.exports = dbConnect;

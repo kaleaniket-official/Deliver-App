@@ -7,7 +7,7 @@
     },
     "servers": [
       {
-        "url": "http://192.168.43.62:8080/mustang",
+        "url": "https://n0x13t8dk3.execute-api.ap-south-1.amazonaws.com/mustang",
         "description": "Development server"
       }
     ],
