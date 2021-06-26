@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
 const connectDB = require("../database/db");
+const constants = require("../constants");
 
 var login = async (req, res) => {
 
@@ -13,7 +14,7 @@ var login = async (req, res) => {
             const token = jwt.sign(req.body,process.env.TOKEN_SECRET_KEY);
             res.header('auth-token',token).json({json_web_token: token, data: data.rows});
         }else{
-            res.status(401).send('Access denied!');
+            res.status(constants.RESPONSE_STATUS.UNAUTHORIZED).send('Access denied!');
             //throw new Error("User does not exists, please enter valid credentials"); 
         }   
     }catch(err){
@@ -24,14 +25,14 @@ var login = async (req, res) => {
 var auth = (req,res,next) =>{
   
     const token = req.header('Authorization');
-    if(!token) return res.status(401).send('Access denied!');
+    if(!token) return res.status(constants.RESPONSE_STATUS.UNAUTHORIZED).send('Access denied!');
 
     try{
          const tokens = token.split(' ');
         const verified = jwt.verify(tokens[1] , process.env.TOKEN_SECRET_KEY);
         req.useContext - verified;
     }catch(err){
-         res.status(400).send('Invalid token!')
+         res.status(constants.RESPONSE_STATUS.BAD_REQUEST).send('Invalid token!')
     }
    next();
 }

@@ -1,5 +1,6 @@
 
 const connectDB = require("../database/db");
+const constants = require("../constants");
 
 var createTenant = async (tenantJson) => {
     return new Promise(async (resolve, reject) => {
@@ -11,10 +12,10 @@ var createTenant = async (tenantJson) => {
                 +"phoneNumber, password, created_date, updated_date) values($1, $2, $3, $4, crypt($5, gen_salt('md5')), now(), now())";
                 const data = await connectDB.query(insertQuery, [tenantUserName, tenantName, email, phoneNumber, password]);
                 if(data && data.rowCount > 0 ){
-                    return resolve({message: "tenant created successfully!",statusCode: 200});
+                    return resolve({message: "tenant created successfully!",statusCode: constants.RESPONSE_STATUS.SUCCESS});
                 }
             }else{
-                return resolve({message: `Tenant with username ${tenantUserName} already exists.`, statusCode: 412});
+                return resolve({message: `Tenant with username ${tenantUserName} already exists.`, statusCode: constants.RESPONSE_STATUS.PRECONDITION_FAILED});
             }
         }catch(err){
             console.error(err.message);
@@ -31,7 +32,7 @@ var getTenants = async () => {
                 if(data.rows.length > 0){
                     return resolve(data.rows);
                 }else{
-                    return resolve({message: "No Tenant data found",statusCode: 404});
+                    return resolve({message: "No Tenant data found",statusCode: constants.RESPONSE_STATUS.UNAUTHORIZED});
                 }
             };
         }catch(err){
@@ -49,7 +50,7 @@ var getTenantById = async (tenantId) => {
                 if(data.rows.length > 0){
                     return resolve(data.rows[0]);
                 }else{
-                    return resolve({message: "No Tenant data found", statusCode: 404});
+                    return resolve({message: "No Tenant data found", statusCode: constants.RESPONSE_STATUS.NOT_FOUND});
                 }
             }
         }catch(err){
@@ -67,7 +68,7 @@ var getTenantByUserName = async (userName) => {
                 if(data.rows.length > 0){
                     return resolve(data.rows[0]);
                 }else{
-                    return resolve({message: "No Tenant data found",statusCode: 404});
+                    return resolve({message: "No Tenant data found",statusCode: constants.RESPONSE_STATUS.NOT_FOUND});
                 }
             }
         }catch(err){
@@ -86,7 +87,7 @@ var setIsAadharVerified = async (tenantId,isAadharVerified) => {
                 return resolve(`Updated Tenant with ID ${tenantId}, set aadhar verified to: ${isAadharVerified}`) ;
             }
             else{
-                return resolve({message: "Tenant not present with id: "+tenantId, statusCode: 404});
+                return resolve({message: "Tenant not present with id: "+tenantId, statusCode: constants.RESPONSE_STATUS.NOT_FOUND});
             }
         }catch(err){
             console.error(err.message);

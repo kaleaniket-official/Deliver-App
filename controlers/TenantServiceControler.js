@@ -1,11 +1,12 @@
 
 const connectDB = require("../database/db");
 const tenantService = require('../Service/TenantService');
+const constants = require("../constants");
 
 var createTenant = async (req,res) => {
     try{
         const resData = await tenantService.createTenant(req.body);
-        res.status(resData.statusCode).send(resData.message);
+        res.status(resData.statusCode).send({message: resData.message});
     }catch(err){
         console.error(err.message);
         res.status(500).send({message: "Failed to create tenant. "+err.message});
@@ -19,9 +20,9 @@ var getTenants =  async (req,res) => {
         if(resData.error)
             res.status(500).send(resData);
         if(resData.message){
-            res.status(resData.statusCode).send(resData.message);
+            res.status(resData.statusCode).send({message: resData.message});
         }else{
-            res.status(200).send(resData);
+            res.status(constants.RESPONSE_STATUS.SUCCESS).send(resData);
         }
     }catch(err){
         console.error(err.message);
@@ -36,9 +37,9 @@ var getTenantById = async (req,res) => {
         if(resData.error)
             res.status(500).send(resData);
         if(resData.message){
-            res.status(resData.statusCode).send(resData.message);
+            res.status(resData.statusCode).send({message: resData.message});
         }else{ 
-             res.status(200).send(resData);
+             res.status(constants.RESPONSE_STATUS.SUCCESS).send(resData);
         }
     }catch(err){
         console.error(err.message);
@@ -53,14 +54,13 @@ var getTenantByUserName = async (req,res) => {
         if(resData.error)
             res.status(500).send(resData);
         if(resData.message){
-            res.status(resData.statusCode).send(resData.message);
+            res.status(resData.statusCode).send({message: resData.message});
         }else{ 
-            res.status(200).send(resData);
+            res.status(constants.RESPONSE_STATUS.SUCCESS).send(resData);
         }
     }catch(err){
         console.error(err.message);
         res.status(500).send({message: "Failed to get tenant by username."});
-
     }
 }
 
@@ -73,13 +73,13 @@ var setIsAadharVerified = async (req,res) => {
         if(resData.error)
             res.status(500).send(resData);
         if(resData.message){
-            res.status(resData.statusCode).send(resData.message);
+            res.status(resData.statusCode).send({message: resData.message});
         }else{ 
-            res.status(200).send(resData);
+            res.status(constants.RESPONSE_STATUS.SUCCESS).send({message: resData});
         }
     }catch(err){
         console.error(err.message);
-        res.status(500).send({message: "Failed to update tenant with ID: "+tenantId});
+        res.status(500).send({message: "Failed to update tenant. "+err.message});
 
     }
 }
